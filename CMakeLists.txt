@@ -8,5 +8,5 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable(pclBundlerReader pointcloudscene.cpp camera.cpp)
+add_executable(pclBundlerReader pointcloudscene.cpp camera.cpp main.cpp)
 target_link_libraries(pclBundlerReader ${PCL_LIBRARIES})

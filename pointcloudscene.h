@@ -4,13 +4,17 @@
 #include <iostream>
 #include <stdio.h>
 
+#include <pcl/io/ply_io.h>
+#include <pcl/io/pcd_io.h>
+
 #include "pointXYZRGBNormalCam.h"
 #include "camera.h"
 
 
-class PointCloudScene
-{
+class PointCloudScene{
+
 public:
+
     PointCloudScene();
     ~PointCloudScene();
 

@@ -1,9 +1,17 @@
+//#include <pcl/conversions.h>
+
+//#include <pcl/ModelCoefficients.h>
+//#include <pcl/sample_consensus/method_types.h>
+//#include <pcl/sample_consensus/model_types.h>
+//#include <pcl/segmentation/sac_segmentation.h>
+//#include <pcl/filters/voxel_grid.h>
+//#include <pcl/filters/extract_indices.h>
+
+//#include <pcl/surface/vtk_smoothing/vtk_mesh_quadric_decimation.h>
+
 #include "pointcloudscene.h"
 
 PointCloudScene::PointCloudScene(){
-
-    pointClouds_.clear();
-    nClouds_ = 0;
 
     cameras_.clear();
     nCameras_ = 0;
@@ -16,6 +24,65 @@ PointCloudScene::~PointCloudScene(){
 
 
 void PointCloudScene::bundlerReader(std::string _fileName){
+
+    std::cerr << "Reading Bundler file" << std::endl;
+
+    std::ifstream inputFile(_fileName);
+    std::string line;
+
+    int nPoints = 0;
+    PointCloud<PointXYZRGBNormalCam>::Ptr cloud (new PointCloud<PointXYZRGBNormalCam>);
+
+    if (inputFile.is_open()){
+
+        // We avoid all possible comments in the firsts lines
+        do {
+            std::getline(inputFile, line);
+        } while (line.at(0) == '#');
+
+        // First, number of cameras and number of points in the input point cloud
+        boost::tokenizer<> tokens(line);
+        boost::tokenizer<>::iterator tit = tokens.begin();
+        std::stringstream ss;
+        ss << *tit;
+        ss >> nCameras_;
+        ++tit;
+
+        // stringstream is cleared. It could also be ss.str("")
+        ss.str(std::string());
+        ss.clear();
+
+        ss << *tit;
+        ss >> nPoints;
+
+        ss.str(std::string());
+        ss.clear();
+
+        // Now we read the camera information
+        for (unsigned int i = 0; i < nCameras_; i++){
+            Camera camera;
+            camera.readCamera(inputFile);
+
+            cameras_.push_back(camera);
+        }
+
+        // Now we read geometry information
+        for (unsigned int i = 0; i < nPoints; i++){
+
+            PointXYZRGBNormalCam point;
+            bundlerPointReader(point, inputFile);
+
+            cloud->push_back(point);
+
+        }
+
+        pointCloud_ = cloud; //---------------------------------------------------------------------------
+
+        inputFile.close();
+
+    } else {
+        std::cerr << "Unable to open Bundle file" << std::endl;
+    }
 
 }
 
@@ -89,5 +156,7 @@ void PointCloudScene::bundlerPointReader(PointXYZRGBNormalCam& _point, std::ifst
 }
 
 void PointCloudScene::writeMesh(std::string _fileName){
+
+    io::savePLYFile(_fileName, *pointCloud_);
 
 }
