@@ -15,4 +15,10 @@ Bundler is used for reconstructing 3D scenes in many scenarios. Its output file 
 
 The system takes one parameter: the Bundler file containing the 3D scene.
 
+### PointXYZRGBNormalCam??
+
+Yeah… This has a reason.
+The system gives you the possibility of estimating point normals through a least-square plane fitting estimation problem. However, there is no mathematical way to solve the sign of the estimated normal, so we have to do something else. As Bundler provides a list of all the cameras which “see” every point, we select the best one and store it as a property of the point (together with position, color, and normal). This way, we can determine if the normal is facing the camera or not and, of course, correct it.
+
+
  

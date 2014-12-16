@@ -9,6 +9,9 @@ int main(int argc, char * argv[]){
     PointCloudScene scene;
     scene.bundlerReader(argv[1]);
 
+    scene.estimateNormals();
+    scene.fixNormals();
+
     scene.writeMesh("test.ply");
 
 

@@ -1,3 +1,8 @@
+#define PCL_NO_PRECOMPILE // This is needed for using custom Point types in PCL
+
+#include <pcl/features/normal_3d.h>
+#include <boost/tokenizer.hpp>
+
 #include "pointcloudscene.h"
 
 PointCloudScene::PointCloudScene(){
@@ -148,5 +153,41 @@ void PointCloudScene::bundlerPointReader(PointXYZRGBNormalCam& _point, std::ifst
 void PointCloudScene::writeMesh(std::string _fileName){
 
     io::savePLYFile(_fileName, *pointCloud_);
+
+}
+
+void PointCloudScene::estimateNormals(){
+
+    std::cerr << "Estimating normals..." << std::endl;
+
+    NormalEstimation<PointXYZRGBNormalCam, PointXYZRGBNormalCam> ne;
+    ne.setInputCloud(pointCloud_);
+
+    search::KdTree<PointXYZRGBNormalCam>::Ptr tree (new search::KdTree<PointXYZRGBNormalCam> ());
+    ne.setSearchMethod (tree);
+    ne.setRadiusSearch (0.5);
+
+    ne.compute (*pointCloud_);
+
+}
+
+void PointCloudScene::fixNormals(){
+
+    std::cerr << "Fixing wrong normal orientation..." << std::endl;
+
+    for (unsigned int i = 0; i < pointCloud_->points.size(); i++){
+        PointXYZRGBNormalCam current = pointCloud_->points[i];
+        const Eigen::Vector3f cur_pos = current.getArray3fMap();
+        const Eigen::Vector3f cam_pos = cameras_[current.camera].getCameraPosition();
+
+        const Eigen::Vector3f cam_dir = cam_pos - cur_pos;
+        const Eigen::Vector3f normal  = current.getNormalVector3fMap();
+
+        if (cam_dir.dot(normal) < 0){
+            pointCloud_->points[i].normal_x = -current.normal_x;
+            pointCloud_->points[i].normal_y = -current.normal_y;
+            pointCloud_->points[i].normal_z = -current.normal_z;
+        }
+    }
 
 }

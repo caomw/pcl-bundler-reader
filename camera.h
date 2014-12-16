@@ -13,6 +13,7 @@ public:
     Camera();
     ~Camera();
 
+
     float getFocalLength();
     Eigen::Matrix3f getRotationMatrix();
     Eigen::Vector3f getTranslationVector();
