@@ -1,14 +1,3 @@
-//#include <pcl/conversions.h>
-
-//#include <pcl/ModelCoefficients.h>
-//#include <pcl/sample_consensus/method_types.h>
-//#include <pcl/sample_consensus/model_types.h>
-//#include <pcl/segmentation/sac_segmentation.h>
-//#include <pcl/filters/voxel_grid.h>
-//#include <pcl/filters/extract_indices.h>
-
-//#include <pcl/surface/vtk_smoothing/vtk_mesh_quadric_decimation.h>
-
 #include "pointcloudscene.h"
 
 PointCloudScene::PointCloudScene(){
@@ -25,7 +14,7 @@ PointCloudScene::~PointCloudScene(){
 
 void PointCloudScene::bundlerReader(std::string _fileName){
 
-    std::cerr << "Reading Bundler file" << std::endl;
+    std::cerr << "Reading Bundler file..." << std::endl;
 
     std::ifstream inputFile(_fileName);
     std::string line;
@@ -35,9 +24,10 @@ void PointCloudScene::bundlerReader(std::string _fileName){
 
     if (inputFile.is_open()){
 
-        // We avoid all possible comments in the firsts lines
+        // We avoid all possible comments in the firsts lines, and also empty lines
         do {
             std::getline(inputFile, line);
+            while (line.empty()) std::getline(inputFile, line);
         } while (line.at(0) == '#');
 
         // First, number of cameras and number of points in the input point cloud
@@ -76,7 +66,7 @@ void PointCloudScene::bundlerReader(std::string _fileName){
 
         }
 
-        pointCloud_ = cloud; //---------------------------------------------------------------------------
+        pointCloud_ = cloud;
 
         inputFile.close();
 

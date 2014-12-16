@@ -14,7 +14,6 @@
 class PointCloudScene{
 
 public:
-
     PointCloudScene();
     ~PointCloudScene();
 
@@ -26,11 +25,7 @@ public:
 
 
 private:
-
-//    std::vector<PointCloud<PointXYZRGBNormalCam>::Ptr > pointClouds_;
-//    unsigned int nClouds_;
     PointCloud<PointXYZRGBNormalCam>::Ptr pointCloud_;
-
     std::vector<Camera> cameras_;
     unsigned int nCameras_;
 };
