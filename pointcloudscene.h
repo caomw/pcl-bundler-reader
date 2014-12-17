@@ -6,8 +6,6 @@
 
 #include <pcl/io/ply_io.h>
 #include <pcl/io/pcd_io.h>
-#include <pcl/features/normal_3d.h>
-
 
 #include "pointXYZRGBNormalCam.h"
 #include "camera.h"
@@ -25,6 +23,11 @@ public:
     void bundlerPointReader(PointXYZRGBNormalCam& _point, std::ifstream& _stream);
     void writeMesh(std::string _fileName);
 
+    // Is normalsFlag_ flag set to true?
+    bool calculateNormals();
+    void activateNormalsFlag();
+    void deactivateNormalsFlag();
+
     // Estimate the normals of a cloud and store them
     void estimateNormals();
 
@@ -37,6 +40,7 @@ private:
     PointCloud<PointXYZRGBNormalCam>::Ptr pointCloud_;
     std::vector<Camera> cameras_;
     unsigned int nCameras_;
+    bool normalsFlag_;
 };
 
 #endif // POINTCLOUDSCENE_H

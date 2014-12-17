@@ -1,18 +1,58 @@
+#include <boost/program_options.hpp>
 #include "pointcloudscene.h"
+
 
 int main(int argc, char * argv[]){
 
-    if (argc != 2){
-        std::cerr << "Wrong number of input parameteres" << std::endl;
+    PointCloudScene scene;
+
+
+    // Parsing the command line arguments
+    try {
+
+        namespace po = boost::program_options;
+
+        po::options_description desc("Options");
+        desc.add_options()
+                ("help,h", "Print this help message")
+                ("normals,n", "Activate normal estimation and correction");
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        po::notify(vm);
+
+        if (vm.count("help")) {
+            std::cerr << desc << std::endl;
+            return 0;
+        }
+
+        if (vm.count("normals")) {
+            std::cerr << "Normals will be estimated" << std::endl;
+            scene.activateNormalsFlag();
+        }
+
+
     }
 
-    PointCloudScene scene;
-    scene.bundlerReader(argv[1]);
+    catch(std::exception& e) {
+        std::cerr << "error: " << e.what() << std::endl;
+        return 1;
+    }
 
-    scene.estimateNormals();
-    scene.fixNormals();
+    catch(...) {
+        std::cerr << "Exception of unknown type!" << std:: endl;
+    }
 
-    scene.writeMesh("test.ply");
+
+    // Last argument is the input file name
+    scene.bundlerReader(argv[argc-1]);
+
+    if (scene.calculateNormals()){
+        scene.estimateNormals();
+        scene.fixNormals();
+    }
+
+    scene.writeMesh("output.ply");
 
 
     return 0;

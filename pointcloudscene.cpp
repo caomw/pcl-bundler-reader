@@ -9,6 +9,7 @@ PointCloudScene::PointCloudScene(){
 
     cameras_.clear();
     nCameras_ = 0;
+    normalsFlag_ = false;
 
 }
 
@@ -154,6 +155,18 @@ void PointCloudScene::writeMesh(std::string _fileName){
 
     io::savePLYFile(_fileName, *pointCloud_);
 
+}
+
+bool PointCloudScene::calculateNormals(){
+    return normalsFlag_;
+}
+
+void PointCloudScene::activateNormalsFlag(){
+    normalsFlag_ = true;
+}
+
+void PointCloudScene::deactivateNormalsFlag(){
+    normalsFlag_ = false;
 }
 
 void PointCloudScene::estimateNormals(){
