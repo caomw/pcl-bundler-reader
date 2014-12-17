@@ -13,7 +13,7 @@ Bundler is used for reconstructing 3D scenes in many scenarios. Its output file 
 
 ### Running the code
 
-The system takes one parameter: the Bundler file containing the 3D scene.
+The system takes one parameter: the Bundler file containing the 3D scene. If a —normals o -n flag is specified, then normals are estimated and their orientation is corrected.
 
 ### PointXYZRGBNormalCam??
 
