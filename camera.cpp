@@ -14,36 +14,36 @@ Camera::~Camera(){
 
 }
 
-float Camera::getFocalLength(){
+float Camera::getFocalLength() const {
     return f_;
 }
 
-Eigen::Matrix3f Camera::getRotationMatrix(){
+Eigen::Matrix3f Camera::getRotationMatrix() const {
     return R_;
 }
 
-Eigen::Vector3f Camera::getTranslationVector(){
+Eigen::Vector3f Camera::getTranslationVector() const {
     return t_;
 }
 
-void Camera::setFocalLength(const float _f){
+void Camera::setFocalLength(float _f){
     f_ = _f;
 }
 
-void Camera::setDistortionCoefficients(const float _k1, const float _k2){
+void Camera::setDistortionCoefficients(float _k1, float _k2){
     k1_ = _k1;
     k2_ = _k2;
 }
 
-void Camera::setRotationMatrix(const Eigen::Matrix3f _R){
+void Camera::setRotationMatrix(const Eigen::Matrix3f& _R){
     R_ = _R;
 }
 
-void Camera::setTranslationVector(const Eigen::Vector3f _t){
+void Camera::setTranslationVector(const Eigen::Vector3f& _t){
     t_ = _t;
 }
 
-Eigen::Vector3f Camera::getCameraPosition(){ // -R'·t
+Eigen::Vector3f Camera::getCameraPosition() const{ // -R'·t
     return -R_.transpose() * t_;
 }
 

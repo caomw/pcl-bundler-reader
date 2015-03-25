@@ -18,7 +18,7 @@ PointCloudScene::~PointCloudScene(){
 }
 
 
-void PointCloudScene::bundlerReader(std::string _fileName){
+void PointCloudScene::bundlerReader(const std::string& _fileName){
 
     std::cerr << "Reading Bundler file..." << std::endl;
 
@@ -151,7 +151,7 @@ void PointCloudScene::bundlerPointReader(PointXYZRGBNormalCam& _point, std::ifst
     }
 }
 
-void PointCloudScene::writeMesh(std::string _fileName){
+void PointCloudScene::writeMesh(const std::string& _fileName){
 
     io::savePLYFile(_fileName, *pointCloud_);
 

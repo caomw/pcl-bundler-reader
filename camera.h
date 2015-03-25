@@ -14,16 +14,16 @@ public:
     ~Camera();
 
 
-    float getFocalLength();
-    Eigen::Matrix3f getRotationMatrix();
-    Eigen::Vector3f getTranslationVector();
+    float getFocalLength() const;
+    Eigen::Matrix3f getRotationMatrix() const;
+    Eigen::Vector3f getTranslationVector() const;
 
-    void setFocalLength(const float _f);
-    void setDistortionCoefficients(const float _k1, const float _k2);
-    void setRotationMatrix(const Eigen::Matrix3f _R);
-    void setTranslationVector(const Eigen::Vector3f _t);
+    void setFocalLength(float _f);
+    void setDistortionCoefficients(float _k1, float _k2);
+    void setRotationMatrix(const Eigen::Matrix3f& _R);
+    void setTranslationVector(const Eigen::Vector3f& _t);
 
-    Eigen::Vector3f getCameraPosition();
+    Eigen::Vector3f getCameraPosition() const;
     void getCameraPosition(PointXYZRGBNormalCam& _point);
 
     void readCamera(std::ifstream& _stream);

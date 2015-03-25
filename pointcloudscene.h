@@ -19,9 +19,9 @@ public:
 
 
     // I/O functions
-    void bundlerReader(std::string _fileName);
+    void bundlerReader(const std::string& _fileName);
     void bundlerPointReader(PointXYZRGBNormalCam& _point, std::ifstream& _stream);
-    void writeMesh(std::string _fileName);
+    void writeMesh(const std::string& _fileName);
 
     // Is normalsFlag_ flag set to true?
     bool calculateNormals();
