@@ -22,7 +22,7 @@ void PointCloudScene::bundlerReader(const std::string& _fileName){
 
     std::cerr << "Reading Bundler file..." << std::endl;
 
-    std::ifstream inputFile(_fileName);
+    std::ifstream inputFile(_fileName.c_str());
     std::string line;
 
     int nPoints = 0;
